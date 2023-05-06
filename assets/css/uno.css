@@ -1,0 +1,32 @@
+body {
+    background: linear-gradient(320deg, blue, aqua, blue);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+
+.green {
+    background: green;
+}
+
+.red {
+    background: red;
+}
+
+.yellow {
+    background: yellow;
+}
+
+.blue {
+    background: blue;
+}
+
+.table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-58%);
+}
