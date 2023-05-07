@@ -41,10 +41,9 @@ player3 = players[2];
 player4 = players[3];
 
 let logo = document.querySelector('.logo');
-
-for(let a of player1) {
-    logo.innerHTML += a.value
-    console.log(a)
-}
+// for(let a of player1) {
+//     logo.innerHTML += a.value
+//     console.log(a)
+// }
 
 // shuffleCards();
