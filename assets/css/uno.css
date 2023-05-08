@@ -52,7 +52,14 @@ body {
     position: absolute;
 }
 
-
+.deck {
+    width: 93px;
+    height: 140px;
+    position: absolute;
+    top: 30%;
+    right: 31%;
+    /* animation: my-deck-animation 1s infinite; */
+}
 
 /**/
 /**/
@@ -75,31 +82,16 @@ body {
     top: 81%;
 }
 
-.positionTop {
+.player-2 {
     position: absolute;
     top: 5%;
 }
 
-.positionUnder {
+.cards-container {
     position: absolute;
     top: 80%;
 }
 
-.green {
-    background: green;
-}
-
-.red {
-    background: red;
-}
-
-.yellow {
-    background: yellow;
-}
-
-.blue {
-    background: blue;
-}
 
 .cardBackground {
     background: url('../img/back.png') no-repeat;
