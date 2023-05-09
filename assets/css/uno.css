@@ -102,3 +102,22 @@ body {
 /**/
 /**/
 /**/
+
+.frente {
+    transform: scale(0.9) rotateY(180deg);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    position: absolute;
+    top: -7px;
+    left: -4px;
+    width: 101px;
+    height: 155px;
+}
+
+.deck.turned .card.frente {
+    transform: scale(0.9) rotateY(0deg);
+}
+
+.deck.my-time .card.verso:hover {
+    cursor: pointer;
+}

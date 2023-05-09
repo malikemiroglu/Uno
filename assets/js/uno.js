@@ -7,6 +7,7 @@ let turn = 7000;
 let direction = 1;
 
 const players = [];
+const gpu = [];
 
 //kartlari desteye koyduk
 function createCards() {
@@ -45,26 +46,9 @@ giveCardsToPlayer()
 console.log(players)
 console.log(deck)
 
-/*
-function organizeCards(playerCards) {
-
-    let organizedCards = [];
-
-    for( let color of ['black'].concat(colors) ) {
-        let filteredCards = playerCards.filter( e => e.color == color );
-        organizedCards = organizedCards.concat(filteredCards.sort((a,b) => {
-            if (a.value > b.value) return 1;
-            if (a.value < b.value) return -1;
-            return 0;
-        }));
-    };
-    return organizedCards;
-};
-organizeCards()
-*/
 
 // ortaya ilk koyulan karti ayarlandi
-function startTable(){
+function startTable() {
     for(let i = 0; i < deck.length; i++) {
         if(!isNaN(parseInt(deck[i].value))) {
             table.push(deck[i]);
@@ -77,25 +61,27 @@ startTable();
 console.log(table)
 console.log(deck)
 
-// // ortada cekilecek kartlar 
-// function renderDeck() {
-//     let deckObject = document.querySelector('#deck');
+// ortada cekilecek kartlar 
+function renderDeck() {
+    let deckObject = document.querySelector('#deck');
 
-//     let valueHTML;
+    // destede ki 0. indexteki karti tuttuk
+    let carta = deck[0];
+    console.log(carta)
 
-//     let carta = deck[0];
+    deckObject.innerHTML = `
+        <div class="card cardBackground">
+                
+        </div>
 
-//     valueHTML = `<span>${carta.value}</span>`;
-
-//     deckObject.innerHTML = `
-//         <div class="card" style="background-color: ${carta.color};">
-//             <span class="topNumber">${valueHTML}</span>
-//             <span class="underNumber">${valueHTML}</span>
-//             <span class="centerNumber">${valueHTML}</span>
-//         </div>
-//     `
-// }
-// renderDeck()
+        <div class="card frente" style="background-color: ${carta.color};">
+            <span class="topNumber">${carta.value}</span>
+            <span class="underNumber">${carta.value}</span>
+            <span class="centerNumber">${carta.value}</span>
+        </div>
+    `
+};
+renderDeck();
 
 // ortaya atilan kartlar
 function renderTable() {
@@ -103,18 +89,16 @@ function renderTable() {
     let numCards = tableCardObject.children.length;
     
     let carta = table[table.length - 1];
+    console.log(carta)
 
-    let angle;
-    angle = (Math.random() - 0.5 * 2 *15);
-
-    let valueHTML;
-    valueHTML = `<span>${carta.value}</span>`;
+    let angle = (Math.random() * -15);
+    console.log(angle)
 
     tableCardObject.innerHTML += `
         <div style="background-color: ${carta.color}; transform: rotateZ(${angle}deg);" class="card">
-            <span class="topNumber">${valueHTML}</span>
-            <span class="underNumber">${valueHTML}</span>
-            <span class="centerNumber">${valueHTML}</span>
+            <span class="topNumber">${carta.value}</span>
+            <span class="underNumber">${carta.value}</span>
+            <span class="centerNumber">${carta.value}</span>
         </div>
     `
 
@@ -124,55 +108,36 @@ function renderTable() {
 };
 renderTable()
 
-function sortCardsOnContainer(){
-    let container = document.querySelector(".cards-container");
-    let cards = [...container.children];
-
-    if(players[0].length == 0) return;
-
-    let numCards = cards.length;
-    let cardWidth = 110;
-
-    let containerWidth = container.clientWidth;
-    let windowWidth = window.innerHeight;
-
-    let desiredWidth = numCards*cardWidth - 8 * (numCards-3);
-
-    if ( desiredWidth <= windowWidth && desiredWidth <= containerWidth ) return;
-
-    let offset;
-
-    if ( desiredWidth >  windowWidth) {
-        offset = ( cards.length * cardWidth - windowWidth ) / ( cards.length - 3 );
-    } else {
-        offset = 8;
-    }
-    cards[0].style.marginLeft = `0px`;
-    for (let i = 1; i < cards.length; i++) {
-        cards[i].style.marginLeft = `-${offset}px`;
-    };
-};
-sortCardsOnContainer();
-
 function renderUserCards() {
     let cardsContainer = document.querySelector('#cardsContainer');
     cardsContainer.innerHTML = "";
 
     for(let carta of players[0]) {
-        let valueHTML;
-
-        valueHTML = `${carta.value}`;
-
         cardsContainer.innerHTML += `
             <div style="background-color: ${carta.color};" class="card" onclick="handleClick(this)">
-                <span class="topNumber">${valueHTML}</span>
-                <span class="underNumber">${valueHTML}</span>
-                <span class="centerNumber">${valueHTML}</span>
+                <span class="topNumber">${carta.value}</span>
+                <span class="underNumber">${carta.value}</span>
+                <span class="centerNumber">${carta.value}</span>
             </div>
         `;
     };
 };
 renderUserCards();
+
+// desteki karti oyuncuya cekmek icin
+function takeCard() {
+    let takenCard = [];
+
+    takenCard.push(deck[0]);
+    players[0].push(deck[0]);
+    deck.shift();
+
+    return takenCard[0];
+}
+takeCard();
+
+
+
 
 
 /*
@@ -201,23 +166,4 @@ for(let i = 0; i < 7; i++){
 
 table.push(deck.pop());
 
-
-
-let player1 = document.querySelector("#player1");
-let player2 = document.querySelector("#player2");
-let player3 = document.querySelector("#player3");
-let player4 = document.querySelector("#player4");
-
-player1 = players[0];
-player2 = players[1];
-player3 = players[2];
-player4 = players[3];
-
-let logo = document.querySelector('.logo');
-// for(let a of player1) {
-//     logo.innerHTML += a.value
-//     console.log(a)
-// }
-
-// shuffleCards();
 */
