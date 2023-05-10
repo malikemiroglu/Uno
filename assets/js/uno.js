@@ -95,14 +95,28 @@ const play = document.querySelector('#cardsContainer');
 play.addEventListener('click',function(e){
     let lastCardOnTable = table[table.length - 1];
 
+    let playerCardColors = [];
+    
     for(let i of players[0]){
-        console.log(i)
+        playerCardColors += i.color + ",";
     }
+    // playerCardsArray karsilastirmam gereken renkler
+    let playerColorArray = playerCardColors.split(",");
+    playerColorArray.pop();
+
+    let playerCardValues = [];
+    for(let i of players[0]){
+        playerCardValues += i.value + ","
+    }
+    let playerValueArray = playerCardValues.split(",");
+    playerValueArray.pop();
+    console.log(playerValueArray)
 
     // index'i yakalatmam gerekiyor sonra o yakalattigim indexe gore karsilastirmam gerekiyor sanirim
 
-    if(lastCardOnTable.value == players[0].value || lastCardOnTable.color == players[0].color){
-        console.log('sikerler')
+    
+    if(lastCardOnTable.value == playerCardValues.value || lastCardOnTable.color == playerColorArray.color){
+        console.log('deneme')
     }
 });
 
@@ -134,6 +148,7 @@ function renderTable() {
 };
 renderTable()
 
+// kullanicinin eline kartlari dagitiyoruz
 function renderUserCards() {
     let cardsContainer = document.querySelector('#cardsContainer');
     cardsContainer.innerHTML = "";
@@ -150,6 +165,21 @@ function renderUserCards() {
     };
 };
 renderUserCards();
+
+// rakibin eline kartlari dagitiyoruz
+function renderCpuCards() {
+    let cpu = document.querySelector('.player-2');
+    cpu.innerHTML = "";
+
+    for(let carta of players[1]) {
+        cpu.innerHTML += `
+            <div class="card cardBackground">
+                
+            </div>
+        `;
+    };
+};
+renderCpuCards();
 
 /*
 // desteki karti oyuncuya cekmek icin
