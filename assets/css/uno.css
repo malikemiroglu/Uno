@@ -16,7 +16,7 @@ body {
 
 
 .cards {
-    width: 300px;
+    width: 500px;
     display: grid;
     grid-template-columns:repeat(auto-fit, minmax(5%,1fr));
 }
@@ -59,15 +59,40 @@ body {
     top: 30%;
     right: 31%;
     /* animation: my-deck-animation 1s infinite; */
+    transition: all .2s ease-in-out;
+}
+
+.deck:hover {
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 /**/
 /**/
 /* ihtiyaca gore eklenecekler*/
 
+.cardBackground {
+    background: url('../img/back.png') no-repeat;
+    display: inline-block;
+    border: none;
+}
+
 .centerNumber {
+    font-size: 3.2rem;
+    font-weight: 700;
+    z-index: 1;
+    text-shadow: 2px 2px #232323;
+}
+
+.centerNumberBg {
+    background: #fff;
+    color: #fff;
     font-size: 3rem;
     font-weight: 700;
+    padding: 15px;
+    border-radius: 50%;
+    position: absolute;
+    transform: rotateZ(36deg);
 }
 
 .topNumber {
@@ -87,21 +112,24 @@ body {
     top: 5%;
 }
 
-.cards-container {
+.cardsContainer {
     position: absolute;
     top: 80%;
 }
 
-
-.cardBackground {
-    background: url('../img/back.png') no-repeat;
-    display: inline-block;
-    border: none;
+.cardsContainer .card:hover {
+    transform: scale(1.05) translateY(-8px);
+    transition: all 0.1s ease-in-out;
+    cursor: pointer;
+    z-index: 999;
 }
 
-/**/
-/**/
-/**/
+.myTurn {
+    box-shadow: -1px 11px 12px rgba(0,0,0,0.85);
+    transform: translateY(-7px);
+    cursor: pointer;
+}
+
 
 .frente {
     transform: scale(0.9) rotateY(180deg);
@@ -121,3 +149,8 @@ body {
 .deck.my-time .card.verso:hover {
     cursor: pointer;
 }
+
+/**/
+/**/
+/**/
+

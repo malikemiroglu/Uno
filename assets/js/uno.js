@@ -7,7 +7,7 @@ let turn = 7000;
 let direction = 1;
 
 const players = [];
-const gpu = [];
+const cpu = [];
 
 //kartlari desteye koyduk
 function createCards() {
@@ -31,14 +31,13 @@ console.log(deck)
 
 // kartlari oyunculara dagitiyoruz
 function giveCardsToPlayer() {
-
     for (let j = 0 ; j < 2 ; j ++) {
 
         let playerCards = [];
         for (let i = 0 ; i < 7 ; i++) {
             playerCards.push(deck.pop());
         }
-        // playerCards = organizeCards(playerCards);
+
         players.push(playerCards);
     };
 };
@@ -65,9 +64,10 @@ console.log(deck)
 function renderDeck() {
     let deckObject = document.querySelector('#deck');
 
-    // destede ki 0. indexteki karti tuttuk
-    let carta = deck[0];
+    // destede ki 0. indexteki karti tuttuk (burada sanki bi hata var bakicam)
+    let carta = deck[1];
     console.log(carta)
+
 
     deckObject.innerHTML = `
         <div class="card cardBackground">
@@ -82,6 +82,31 @@ function renderDeck() {
     `
 };
 renderDeck();
+
+
+const deckShow = document.querySelector('.deck');
+deckShow.addEventListener('click', function(e){
+    const element = e.target;
+    console.log(element)
+});
+
+const play = document.querySelector('#cardsContainer');
+
+play.addEventListener('click',function(e){
+    let lastCardOnTable = table[table.length - 1];
+
+    for(let i of players[0]){
+        console.log(i)
+    }
+
+    // index'i yakalatmam gerekiyor sonra o yakalattigim indexe gore karsilastirmam gerekiyor sanirim
+
+    if(lastCardOnTable.value == players[0].value || lastCardOnTable.color == players[0].color){
+        console.log('sikerler')
+    }
+});
+
+
 
 // ortaya atilan kartlar
 function renderTable() {
@@ -98,7 +123,8 @@ function renderTable() {
         <div style="background-color: ${carta.color}; transform: rotateZ(${angle}deg);" class="card">
             <span class="topNumber">${carta.value}</span>
             <span class="underNumber">${carta.value}</span>
-            <span class="centerNumber">${carta.value}</span>
+            <span class="centerNumberBg">${carta.value}</span>
+            <span style="color:${carta.color};" class="centerNumber">${carta.value}</span>
         </div>
     `
 
@@ -114,16 +140,18 @@ function renderUserCards() {
 
     for(let carta of players[0]) {
         cardsContainer.innerHTML += `
-            <div style="background-color: ${carta.color};" class="card" onclick="handleClick(this)">
+            <div style="background-color: ${carta.color};" class="card"">
                 <span class="topNumber">${carta.value}</span>
                 <span class="underNumber">${carta.value}</span>
-                <span class="centerNumber">${carta.value}</span>
+                <span class="centerNumberBg">${carta.value}</span>
+                <span style="color:${carta.color};" class="centerNumber">${carta.value}</span>
             </div>
         `;
     };
 };
 renderUserCards();
 
+/*
 // desteki karti oyuncuya cekmek icin
 function takeCard() {
     let takenCard = [];
@@ -135,11 +163,11 @@ function takeCard() {
     return takenCard[0];
 }
 takeCard();
+*/
 
 
 
-
-
+//#region 
 /*
 // kartlari karistirip desteye dagit
 for(let i = 0; i < colors.length; i++){
@@ -167,3 +195,4 @@ for(let i = 0; i < 7; i++){
 table.push(deck.pop());
 
 */
+//#endregion
