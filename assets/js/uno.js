@@ -31,7 +31,7 @@ console.log(deck)
 
 // kartlari oyunculara dagitiyoruz
 function giveCardsToPlayer() {
-    for (let j = 0 ; j < 2 ; j ++) {
+    for (let j = 0 ; j < 4 ; j ++) {
 
         let playerCards = [];
         for (let i = 0 ; i < 7 ; i++) {
@@ -66,6 +66,7 @@ function renderDeck() {
 
     // destede ki 0. indexteki karti tuttuk (burada sanki bi hata var bakicam)
     let carta = deck[1];
+
     console.log(carta)
 
 
@@ -114,10 +115,14 @@ play.addEventListener('click',function(e){
 
     // index'i yakalatmam gerekiyor sonra o yakalattigim indexe gore karsilastirmam gerekiyor sanirim
 
-    
-    if(lastCardOnTable.value == playerCardValues.value || lastCardOnTable.color == playerColorArray.color){
-        console.log('deneme')
+
+    for(let i = 0; i < playerValueArray.lengt; i++)
+    if(lastCardOnTable.value == playerValueArray){
+        console.log("bu kart atılcak")
     }
+
+    
+    
 });
 
 
@@ -148,10 +153,14 @@ function renderTable() {
 };
 renderTable()
 
-// kullanicinin eline kartlari dagitiyoruz
+// kullanicilarin eline kartlari dagitiyoruz
 function renderUserCards() {
     let cardsContainer = document.querySelector('#cardsContainer');
+    let cpuTwo = document.querySelector('#player-2');
+    let cpuThree = document.querySelector('#player-3');
+    let cpuFour = document.querySelector('#player-4');
     cardsContainer.innerHTML = "";
+    cpu.innerHTML = "";
 
     for(let carta of players[0]) {
         cardsContainer.innerHTML += `
@@ -163,23 +172,43 @@ function renderUserCards() {
             </div>
         `;
     };
-};
-renderUserCards();
-
-// rakibin eline kartlari dagitiyoruz
-function renderCpuCards() {
-    let cpu = document.querySelector('.player-2');
-    cpu.innerHTML = "";
 
     for(let carta of players[1]) {
-        cpu.innerHTML += `
-            <div class="card cardBackground">
-                
-            </div>
+        cpuTwo.innerHTML += `
+        <div style="background-color: ${carta.color};" class="card"">
+            <span class="topNumber">${carta.value}</span>
+            <span class="underNumber">${carta.value}</span>
+            <span class="centerNumberBg">${carta.value}</span>
+            <span style="color:${carta.color};" class="centerNumber">${carta.value}</span>
+        </div>
+        `;
+    };
+
+    for(let carta of players[2]) {
+        cpuThree.innerHTML += `
+        <div style="background-color: ${carta.color};" class="card"">
+            <span class="topNumber">${carta.value}</span>
+            <span class="underNumber">${carta.value}</span>
+            <span class="centerNumberBg">${carta.value}</span>
+            <span style="color:${carta.color};" class="centerNumber">${carta.value}</span>
+        </div>
+        `;
+    };
+
+    for(let carta of players[3]) {
+        cpuFour.innerHTML += `
+        <div style="background-color: ${carta.color};" class="card"">
+            <span class="topNumber">${carta.value}</span>
+            <span class="underNumber">${carta.value}</span>
+            <span class="centerNumberBg">${carta.value}</span>
+            <span style="color:${carta.color};" class="centerNumber">${carta.value}</span>
+        </div>
         `;
     };
 };
-renderCpuCards();
+renderUserCards();
+
+console.clear()
 
 /*
 // desteki karti oyuncuya cekmek icin
