@@ -48,13 +48,47 @@ body {
     transform: translateY(-58%); */
     width: 93px;
     height: 140px;
-    
 }
 
 .table .card {
     position: absolute;
 }
 
+.stackOfDeck {
+    position: absolute;
+    width: 93px;
+    height: 140px;
+}
+.stackOfDeck:nth-child(10){
+    top: 2px;
+}
+.stackOfDeck:nth-child(9){
+    top: 4px;
+}
+.stackOfDeck:nth-child(8){
+    top: 6px;
+}
+.stackOfDeck:nth-child(7){
+    top: 8px;
+}
+.stackOfDeck:nth-child(6){
+    top: 10px;
+}
+.stackOfDeck:nth-child(5){
+    top: 12px;
+}
+.stackOfDeck:nth-child(4){
+    top: 14px;
+}
+.stackOfDeck:nth-child(3){
+    top: 16px;
+}
+.stackOfDeck:nth-child(2){
+    top: 18px;
+}
+.stackOfDeck:nth-child(1){
+    top: 20px;
+}
 .deck {
     width: 93px;
     height: 140px;
