@@ -35,7 +35,7 @@ function giveCardsToPlayer() {
         players.push(playerCards);
     };
 };
-giveCardsToPlayer()
+giveCardsToPlayer();
 
 // ortaya ilk koyulan kart ayarlandi
 table.push(deck.pop());
@@ -79,10 +79,10 @@ function renderUserCards() {
 };
 renderUserCards();
 
-// table icin kartlarin html kodlarini hazirladik
-function createCardHtmlDeck(color,value) {
+// deck icin kartlarin html kodlarini hazirladik
+function createCardHtmlDeck(color,value, back = false) {
     return `
-    <div class="card stackOfDeck" data-color="${color}" data-value="${value}" style="background-color:${color};">
+    <div class="card stackOfDeck ${back ? 'back': ''}" data-color="${color}" data-value="${value}" style="background-color:${color};">
         <span class="topNumber">${value}</span>
         <span class="underNumber">${value}</span>
         <span class="centerNumberBg">${value}</span>
@@ -91,19 +91,21 @@ function createCardHtmlDeck(color,value) {
     `
 };
 
-// ortadan cekilecek kartlar 
+// deckten cekilecek kartlar 
 function renderDeck() {
     for(let card of deck){
-        deckObject.innerHTML += createCardHtmlDeck(card.color, card.value);
+        deckObject.innerHTML += createCardHtmlDeck(card.color, card.value, false);
     }
 };
 renderDeck();
 
+
+
 // ortaya atilan kartlar
 function renderTable() {
     let carta = table[table.length - 1];
-    let angle = (Math.random() * -15);
-
+    let angle = (Math.random() * - 15);
+    
     tableCardObject.innerHTML += `
         <div style="background-color:${carta.color}; transform: rotateZ(${angle}deg);" class="card">
             <span class="topNumber">${carta.value}</span>
@@ -113,7 +115,7 @@ function renderTable() {
         </div>
     `
 };
-renderTable()
+renderTable();
 
 let cardElements = document.querySelectorAll('.card');
 for(let cardElement of cardElements) {
@@ -121,7 +123,6 @@ for(let cardElement of cardElements) {
 }
 
 function isCardPlayable(cardColor, cardValue) {
-    //let lastCardOnTable = document.querySelector('.table .card:last-child');
     if(table[table.length-1].color === cardColor || table[table.length-1].value === cardValue) {
         return true;
     };
@@ -131,13 +132,14 @@ function isCardPlayable(cardColor, cardValue) {
 function changeTurn() {
     if(turn === 1) {
         turn = 2;
-    }else {
+    } else {
         turn = 1;
     }
 
     isDeckUsed = false;
 }
 
+// hangi kullanicin oynayabilecegini sorguluyoruz
 function canCurrentUserPlay() {
     let currentPlayerCards;
     if(turn === 1) {
@@ -151,6 +153,8 @@ function canCurrentUserPlay() {
             return true;
         }
     }
+
+    return false;
 }
 
 let isDeckUsed = false; // deck'ten kart eklemeyi engellemek icin
@@ -168,13 +172,15 @@ function playCard() {
             return;
         }
 
-        let handToAppend = cpuTwo;
+        //this = card clasını temsil ediyor burada
+        // sira kimdeyse desckteki karti secilen divin alt cocugu olarak atiyor
         if (turn === 1){
-            handToAppend = cardsContainer;
+            cardsContainer.appendChild(this);
+        } else {
+            cpuTwo.appendChild(this);
         }
 
-        this.classList.remove('stackOfDeck');
-        handToAppend.appendChild(this);
+        this.classList.remove('back','stackOfDeck');
         isDeckUsed = true;
 
         if(!canCurrentUserPlay()){
@@ -196,13 +202,16 @@ function playCard() {
         return;
     }
 
+    let playerCardContainer = this.parentNode;
+
     tableCardObject.appendChild(this);
     table[table.length-1].color = this.dataset.color;
     table[table.length-1].value = this.dataset.value;
 
-    
-
+    if(playerCardContainer.children.length === 0) {
+        alert('Kazanan oyuncu: ' + turn);
+        cardElements.forEach(card => card.removeEventListener('click',playCard));
+    }
     changeTurn();
-
 };
 

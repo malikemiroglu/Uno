@@ -54,6 +54,26 @@ body {
     position: absolute;
 }
 
+.table .card:nth-child(2n) {
+    transform: rotate(5deg);
+}
+
+.table .card:nth-child(3n) {
+    transform: rotate(-10deg);
+}
+
+.table .card:nth-child(4n) {
+    transform: rotate(15deg);
+}
+
+.table .card:nth-child(5n) {
+    transform: rotate(-15deg);
+}
+
+.table .card:nth-child(6n) {
+    transform: rotate(20deg);
+}
+
 .stackOfDeck {
     position: absolute;
     width: 93px;
@@ -108,10 +128,14 @@ body {
 /**/
 /* ihtiyaca gore eklenecekler*/
 
-.cardBackground {
+.back {
     background: url('../img/back.png') no-repeat;
-    display: inline-block;
     border: none;
+}
+
+.back span {
+    color: transparent !important;
+    text-shadow: none;
 }
 
 .centerNumber {
