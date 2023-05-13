@@ -130,10 +130,19 @@ function isCardPlayable(cardColor, cardValue) {
 };
 
 function changeTurn() {
-    if(turn === 1) {
-        turn = 2;
-    } else {
-        turn = 1;
+    switch(turn){
+        case 1:
+            turn = 2;
+            break;
+        case 2:
+            turn = 3;
+            break;    
+        case 3:
+            turn = 4;
+            break;
+        case 4:
+            turn = 1;
+            break;
     }
 
     isDeckUsed = false;
@@ -189,18 +198,13 @@ function playCard() {
         return;
     }
 
-    if(!isCardPlayable(this.dataset.color, this.dataset.value)) {
-        return;
-    };
+    if(!isCardPlayable(this.dataset.color, this.dataset.value)) return;
 
     // burasi düzeltilecek
-    if(turn === 1 && this.parentNode.classList.contains('player-2') || this.parentNode.classList.contains('player-3') || this.parentNode.classList.contains('player-4')){
-        return;
-    }
-
-    if(turn === 2 && this.parentNode.classList.contains('cardsContainer')){
-        return;
-    }
+    if(turn === 1 && !this.parentNode.classList.contains('cardsContainer')) return;
+    if(turn === 2 && !this.parentNode.classList.contains('player-2')) return;
+    if(turn === 3 && !this.parentNode.classList.contains('player-3')) return;
+    if(turn === 4 && !this.parentNode.classList.contains('player-4')) return;
 
     let playerCardContainer = this.parentNode;
 
