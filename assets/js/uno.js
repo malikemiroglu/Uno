@@ -46,7 +46,7 @@ function createCardHtml(color, value) {
         <div style="background-color:${color};" data-color="${color}" data-value="${value}" class="card">
             <span class="topNumber">${value}</span>
             <span class="underNumber">${value}</span>
-            <span class="centerNumberBg">${value}</span>
+            <span class="centerNumberBg" id="centerNumberBg">${value}</span>
             <span style="color:${color};" class="centerNumber">${value}</span>
         </div>
         `
@@ -95,10 +95,20 @@ function createCardHtmlDeck(color,value, back = false) {
 function renderDeck() {
     for(let card of deck){
         deckObject.innerHTML += createCardHtmlDeck(card.color, card.value, false);
-    }
+        
+    };
 };
 renderDeck();
 
+
+// deck altindaki centerNumberBg adli spanlara ulasip silicez
+// let centerNumberBgElements = deckObject.querySelectorAll('.centerNumberBg');
+// function centerNumberBgRemove() {
+//     centerNumberBgElements.forEach(function(centerNumberBgElement) {
+//         centerNumberBgElement.remove();
+//     });
+// }
+// centerNumberBgRemove();
 
 
 // ortaya atilan kartlar
@@ -153,8 +163,12 @@ function canCurrentUserPlay() {
     let currentPlayerCards;
     if(turn === 1) {
         currentPlayerCards = document.querySelectorAll('.cardsContainer .card');
-    }else {
-        currentPlayerCards = document.querySelectorAll('player-2 .card');
+    }else if(turn === 2){
+        currentPlayerCards = document.querySelectorAll('.player-2 .card');
+    }else if(turn === 3){
+        currentPlayerCards = document.querySelectorAll('.player-3 .card');
+    }else if(turn === 4){
+        currentPlayerCards = document.querySelectorAll('.player-4 .card');
     }
     
     for(let card of currentPlayerCards) {
@@ -185,8 +199,12 @@ function playCard() {
         // sira kimdeyse desckteki karti secilen divin alt cocugu olarak atiyor
         if (turn === 1){
             cardsContainer.appendChild(this);
-        } else {
+        }else if(turn === 2) {
             cpuTwo.appendChild(this);
+        }else if(turn === 3) {
+            cpuThree.appendChild(this);
+        }else if(turn === 4) {
+            cpuFour.appendChild(this);
         }
 
         this.classList.remove('back','stackOfDeck');
