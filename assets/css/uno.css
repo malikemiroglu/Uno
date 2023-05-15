@@ -153,6 +153,7 @@ body {
     border-radius: 50%;
     position: absolute;
     transform: rotateZ(36deg);
+    color: transparent;
 }
 
 .topNumber {

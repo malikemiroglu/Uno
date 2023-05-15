@@ -46,7 +46,7 @@ function createCardHtml(color, value) {
         <div style="background-color:${color};" data-color="${color}" data-value="${value}" class="card">
             <span class="topNumber">${value}</span>
             <span class="underNumber">${value}</span>
-            <span class="centerNumberBg" id="centerNumberBg">${value}</span>
+            <span class="centerNumberBg">${value}</span>
             <span style="color:${color};" class="centerNumber">${value}</span>
         </div>
         `
@@ -94,8 +94,7 @@ function createCardHtmlDeck(color,value, back = false) {
 // deckten cekilecek kartlar 
 function renderDeck() {
     for(let card of deck){
-        deckObject.innerHTML += createCardHtmlDeck(card.color, card.value, false);
-        
+        deckObject.innerHTML += createCardHtmlDeck(card.color, card.value, true);
     };
 };
 renderDeck();
@@ -161,14 +160,19 @@ function changeTurn() {
 // hangi kullanicin oynayabilecegini sorguluyoruz
 function canCurrentUserPlay() {
     let currentPlayerCards;
-    if(turn === 1) {
-        currentPlayerCards = document.querySelectorAll('.cardsContainer .card');
-    }else if(turn === 2){
-        currentPlayerCards = document.querySelectorAll('.player-2 .card');
-    }else if(turn === 3){
-        currentPlayerCards = document.querySelectorAll('.player-3 .card');
-    }else if(turn === 4){
-        currentPlayerCards = document.querySelectorAll('.player-4 .card');
+    switch(turn){
+        case 1:
+            currentPlayerCards = document.querySelectorAll('.cardsContainer .card');
+            break;
+        case 2:
+            currentPlayerCards = document.querySelectorAll('.player-2 .card');
+            break;
+        case 3:
+            currentPlayerCards = document.querySelectorAll('.player-3 .card');
+            break;
+        case 4:
+            currentPlayerCards = document.querySelectorAll('.player-4 .card');
+            break;
     }
     
     for(let card of currentPlayerCards) {
@@ -236,4 +240,3 @@ function playCard() {
     }
     changeTurn();
 };
-
