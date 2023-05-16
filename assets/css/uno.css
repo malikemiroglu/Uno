@@ -156,6 +156,10 @@ body {
     color: transparent;
 }
 
+.centerNumberBgOff {
+    background: none;
+}
+
 .topNumber {
     position: absolute;
     top: 0;
@@ -201,7 +205,7 @@ body {
 }
 
 .myTurn {
-    box-shadow: -1px 11px 12px rgba(0,0,0,0.85);
+    box-shadow: -1px 11px 12px rgba(52, 161, 1, 0.85);
     transform: translateY(-7px);
     cursor: pointer;
 }

@@ -85,7 +85,7 @@ function createCardHtmlDeck(color,value, back = false) {
     <div class="card stackOfDeck ${back ? 'back': ''}" data-color="${color}" data-value="${value}" style="background-color:${color};">
         <span class="topNumber">${value}</span>
         <span class="underNumber">${value}</span>
-        <span class="centerNumberBg">${value}</span>
+        <span class="centerNumberBg centerNumberBgOff">${value}</span>
         <span style="color:${color};" class="centerNumber">${value}</span>
     </div>
     `
@@ -98,17 +98,6 @@ function renderDeck() {
     };
 };
 renderDeck();
-
-
-// deck altindaki centerNumberBg adli spanlara ulasip silicez
-// let centerNumberBgElements = deckObject.querySelectorAll('.centerNumberBg');
-// function centerNumberBgRemove() {
-//     centerNumberBgElements.forEach(function(centerNumberBgElement) {
-//         centerNumberBgElement.remove();
-//     });
-// }
-// centerNumberBgRemove();
-
 
 // ortaya atilan kartlar
 function renderTable() {
@@ -182,12 +171,42 @@ function canCurrentUserPlay() {
     }
 
     return false;
+};
+
+// oynama sirasinin kimde oldugunu gosterir
+function playerTurn(){
+    switch(turn){
+        case 1:
+            cpuTwo.classList.remove('myTurn');
+            cpuThree.classList.remove('myTurn');
+            cpuFour.classList.remove('myTurn');
+            cardsContainer.classList.add('myTurn');
+            break;
+        case 2:
+            cpuFour.classList.remove('myTurn');
+            cpuThree.classList.remove('myTurn');
+            cardsContainer.classList.remove('myTurn');
+            cpuTwo.classList.add('myTurn');
+            break;
+        case 3:
+            cpuFour.classList.remove('myTurn');
+            cardsContainer.classList.remove('myTurn');
+            cpuTwo.classList.remove('myTurn');
+            cpuThree.classList.add('myTurn');
+            break;
+        case 4:
+            cpuTwo.classList.remove('myTurn');
+            cardsContainer.classList.remove('myTurn');
+            cpuThree.classList.remove('myTurn');
+            cpuFour.classList.add('myTurn');
+            break;
+    }
 }
+playerTurn();
 
 let isDeckUsed = false; // deck'ten kart eklemeyi engellemek icin
 
 function playCard() {
-
     //table'a tiklatmiyorum.
     if(this.parentNode.classList.contains('table')){
         return;
@@ -212,6 +231,7 @@ function playCard() {
         }
 
         this.classList.remove('back','stackOfDeck');
+        this.children[2].classList.remove('centerNumberBgOff');
         isDeckUsed = true;
 
         if(!canCurrentUserPlay()){
@@ -222,7 +242,7 @@ function playCard() {
 
     if(!isCardPlayable(this.dataset.color, this.dataset.value)) return;
 
-    // burasi düzeltilecek
+    // sira kimde ise sadece o oyunucunun oynamasini saglar
     if(turn === 1 && !this.parentNode.classList.contains('cardsContainer')) return;
     if(turn === 2 && !this.parentNode.classList.contains('player-2')) return;
     if(turn === 3 && !this.parentNode.classList.contains('player-3')) return;
@@ -239,4 +259,5 @@ function playCard() {
         cardElements.forEach(card => card.removeEventListener('click',playCard));
     }
     changeTurn();
+    playerTurn();
 };
