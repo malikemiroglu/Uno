@@ -4,7 +4,6 @@ let players = [];
 let cpu = [];
 let deck = [];
 let table = [];
-let playersTurn = ["player-1","player-2","player-3","player-4"];
 let turn = 1;
 
 // kartlari desteye koyduk
@@ -120,6 +119,7 @@ for(let cardElement of cardElements) {
     cardElement.addEventListener('click', playCard);
 }
 
+// kart oynayabiliyor mu kontrol
 function isCardPlayable(cardColor, cardValue) {
     if(table[table.length-1].color === cardColor || table[table.length-1].value === cardValue) {
         return true;
@@ -164,6 +164,7 @@ function canCurrentUserPlay() {
             break;
     }
     
+    // kart oynayabiliyor mu kontrol
     for(let card of currentPlayerCards) {
         if(isCardPlayable(card.dataset.color, card.dataset.value)) {
             return true;
@@ -236,6 +237,7 @@ function playCard() {
 
         if(!canCurrentUserPlay()){
             changeTurn();
+            playerTurn();
         }
         return;
     }
