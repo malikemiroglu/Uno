@@ -18,6 +18,7 @@ function createCards() {
 };
 createCards();
 
+
 // desteyi karistirdik
 function shuffleCards() {
     deck.sort(() => Math.random() - 0.5);
@@ -40,7 +41,17 @@ giveCardsToPlayer();
 table.push(deck.pop());
 
 // kullanicilar icin kartlarin html kodlarini hazirladik
-function createCardHtml(color, value) {
+function createCardHtml(color, value, isBack = false) {
+    if(isBack) {
+        return `
+        <div class="card back" data-color="${color}" style="background-color:${color};"  data-color="${color}" data-value="${value}">
+            <span class="topNumber">${value}</span>
+            <span class="underNumber">${value}</span>
+            <span class="centerNumberBg centerNumberBgOff">${value}</span>
+            <span style="color:${color};" class="centerNumber">${value}</span>
+        </div>
+        `;
+    } else {
         return `
         <div style="background-color:${color};" data-color="${color}" data-value="${value}" class="card">
             <span class="topNumber">${value}</span>
@@ -49,6 +60,9 @@ function createCardHtml(color, value) {
             <span style="color:${color};" class="centerNumber">${value}</span>
         </div>
         `
+    }
+
+
 };
 
 let cardsContainer = document.querySelector('#cardsContainer');
@@ -65,23 +79,23 @@ function renderUserCards() {
     };
 
     for(let card of players[1]) {
-        cpuTwo.innerHTML += createCardHtml(card.color,card.value);
+        cpuTwo.innerHTML += createCardHtml(card.color, card.value, true);
     };
 
     for(let card of players[2]) {
-        cpuThree.innerHTML += createCardHtml(card.color,card.value);
+        cpuThree.innerHTML += createCardHtml(card.color,card.value, true);
     };
 
     for(let card of players[3]) {
-        cpuFour.innerHTML += createCardHtml(card.color,card.value);
+        cpuFour.innerHTML += createCardHtml(card.color,card.value, true);
     };
 };
 renderUserCards();
 
 // deck icin kartlarin html kodlarini hazirladik
-function createCardHtmlDeck(color,value, back = false) {
+function createCardHtmlDeck(color,value, isBack = false) {
     return `
-    <div class="card stackOfDeck ${back ? 'back': ''}" data-color="${color}" data-value="${value}" style="background-color:${color};">
+    <div class="card stackOfDeck ${isBack ? 'back': ''}" data-color="${color}" data-value="${value}" style="background-color:${color};">
         <span class="topNumber">${value}</span>
         <span class="underNumber">${value}</span>
         <span class="centerNumberBg centerNumberBgOff">${value}</span>
@@ -212,6 +226,14 @@ function playCard() {
     if(this.parentNode.classList.contains('table')){
         return;
     }
+
+    // cpu'lardaki kartlara tiklaninca ortadaki kartla ayni degilse on tarafi gosterilmemesi icin
+    if (isCardPlayable(this.dataset.color, this.dataset.value)) {
+        if ((turn === 2 || turn === 3 || turn === 4) && this.parentNode.classList.contains('player-' + turn)) {
+            this.classList.remove('back');
+            this.children[2].classList.remove('centerNumberBgOff');
+        }
+    }
     
     if(this.parentNode.classList.contains('deck')){
         // isDeckUsed true olursa destemize deck'ten ikinci karti ekletmemek icin
@@ -223,17 +245,20 @@ function playCard() {
         // sira kimdeyse desckteki karti secilen divin alt cocugu olarak atiyor
         if (turn === 1){
             cardsContainer.appendChild(this);
+            this.classList.remove('back', 'stackOfDeck');
+            this.children[2].classList.remove('centerNumberBgOff'); 
         }else if(turn === 2) {
             cpuTwo.appendChild(this);
+            this.classList.remove('stackOfDeck');
         }else if(turn === 3) {
             cpuThree.appendChild(this);
+            this.classList.remove('stackOfDeck');
         }else if(turn === 4) {
             cpuFour.appendChild(this);
+            this.classList.remove('stackOfDeck');
         }
-
-        this.classList.remove('back','stackOfDeck');
-        this.children[2].classList.remove('centerNumberBgOff');
-        isDeckUsed = true;
+        
+        isDeckUsed = true; // deck'ten ikinci karti eklemeyi engellemek icin
 
         if(!canCurrentUserPlay()){
             changeTurn();
@@ -263,3 +288,36 @@ function playCard() {
     changeTurn();
     playerTurn();
 };
+
+function playCardByCPU() {
+    let currentPlayerCards;
+    switch (turn) {
+        case 2:
+            currentPlayerCards = document.querySelectorAll('.player-2 .card');
+            break;
+        case 3:
+            currentPlayerCards = document.querySelectorAll('.player-3 .card');
+            break;
+        case 4:
+            currentPlayerCards = document.querySelectorAll('.player-4 .card');
+            break;
+    }
+
+    // Uygun kartı otomatik olarak oynat
+    for (let card of currentPlayerCards) {
+        if (isCardPlayable(card.dataset.color, card.dataset.value)) {
+            setTimeout(() => {
+                card.click();
+            }, 1000); // 1 saniye gecikme ile kartı oynat (dilediğiniz zamanı ayarlayabilirsiniz)
+            return;
+        }
+    }
+
+    // Uygun kart yoksa kart çek
+    setTimeout(() => {
+        let deckCards = document.querySelectorAll('.deck .card');
+        if (deckCards.length > 0) {
+            deckCards[deckCards.length - 1].click();
+        }
+    }, 1000); // 1 saniye gecikme ile kartı çek (dilediğiniz zamanı ayarlayabilirsiniz)
+}
