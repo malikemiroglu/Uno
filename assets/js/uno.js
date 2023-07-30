@@ -1,10 +1,11 @@
-let value = ["1","1","1","1","1",   "1","1","1","1"];
+let value = ["0","1","2","3","4","5","6","7","8","9"];
 let colors = ["green", "red", "darkorange", "dodgerblue"];
 let players = [];
 let cpu = [];
 let deck = [];
 let table = [];
 let turn = 1;
+let isDeckUsed = false;
 
 // kartlari desteye koyduk
 function createCards() {
@@ -66,6 +67,8 @@ let cpuThree = document.querySelector('#player-3');
 let cpuFour = document.querySelector('#player-4');
 let deckObject = document.querySelector('#deck');
 let tableCardObject = document.querySelector('#table');
+const playerClasses = ['cardsContainer', 'player-2', 'player-3', 'player-4'];
+
 
 // kullanicilarin eline kartlari dagitiyoruz
 function renderUserCards() {
@@ -185,36 +188,13 @@ function canCurrentUserPlay() {
 
 // oynama sirasinin kimde oldugunu gosterir
 function playerTurn(){
-    switch(turn){
-        case 1:
-            cpuTwo.classList.remove('myTurn');
-            cpuThree.classList.remove('myTurn');
-            cpuFour.classList.remove('myTurn');
-            cardsContainer.classList.add('myTurn');
-            break;
-        case 2:
-            cpuFour.classList.remove('myTurn');
-            cpuThree.classList.remove('myTurn');
-            cardsContainer.classList.remove('myTurn');
-            cpuTwo.classList.add('myTurn');
-            break;
-        case 3:
-            cpuFour.classList.remove('myTurn');
-            cardsContainer.classList.remove('myTurn');
-            cpuTwo.classList.remove('myTurn');
-            cpuThree.classList.add('myTurn');
-            break;
-        case 4:
-            cpuTwo.classList.remove('myTurn');
-            cardsContainer.classList.remove('myTurn');
-            cpuThree.classList.remove('myTurn');
-            cpuFour.classList.add('myTurn');
-            break;
+    const players = [cardsContainer, cpuTwo, cpuThree, cpuFour];
+    for(let i=1; i<=4; i++){
+        players[i-1].classList.toggle('myTurn', i === turn);
     }
 }
 playerTurn();
 
-let isDeckUsed = false; // deck'ten kart eklemeyi engellemek icin
 
 function playCard() {
     //table'a tiklatmiyorum.
@@ -238,10 +218,8 @@ function playCard() {
     if(!isCardPlayable(this.dataset.color, this.dataset.value)) return;
 
     // sira kimde ise sadece o oyunucunun oynamasini saglar
-    if(turn === 1 && !this.parentNode.classList.contains('cardsContainer')) return;
-    if(turn === 2 && !this.parentNode.classList.contains('player-2')) return;
-    if(turn === 3 && !this.parentNode.classList.contains('player-3')) return;
-    if(turn === 4 && !this.parentNode.classList.contains('player-4')) return;
+    const currentPlayer = playerClasses[turn - 1];
+    if (!this.parentNode.classList.contains(currentPlayer)) return;
 
     tableCardObject.appendChild(this);
     table.push({ color: this.dataset.color, value: this.dataset.value });
