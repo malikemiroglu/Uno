@@ -7,7 +7,6 @@ let table = [];
 let turn = 1;
 let isDeckUsed = false;
 
-// kartlari desteye koyduk
 function createCards() {
     for(let color of colors){
         for(let i = 0; i < value.length; i++) {
@@ -18,27 +17,18 @@ function createCards() {
 };
 createCards();
 
-
-// desteyi karistirdik
 const shuffleCards = () => deck.sort(() => Math.random() - 0.5);
 shuffleCards();
 
-// kartlari tum oyunculara dagitiyoruz
 function giveCardsToPlayer() {
     for (let j = 0 ; j < 4 ; j ++) {
-        let playerCards = [];
-        for (let i = 0 ; i < 7 ; i++) {
-            playerCards.push(deck.pop());
-        }
-        players.push(playerCards);
+        players[j] = deck.splice(0, 7);
     };
 };
 giveCardsToPlayer();
 
-// ortaya ilk koyulan kart ayarlandi
 table.push(deck.pop());
 
-// kullanicilar icin kartlarin html kodlarini hazirladik
 function createCardHtml(color, value, isBack = false) {
     if(isBack) {
         return `
@@ -69,29 +59,26 @@ let deckObject = document.querySelector('#deck');
 let tableCardObject = document.querySelector('#table');
 const playerClasses = ['cardsContainer', 'player-2', 'player-3', 'player-4'];
 
-
-// kullanicilarin eline kartlari dagitiyoruz
 function renderUserCards() {
     for(let card of players[0]) {
         cardsContainer.innerHTML += createCardHtml(card.color,card.value);
     };
 
     for(let card of players[1]) {
-        cpuTwo.innerHTML += createCardHtml(card.color, card.value, false);
+        cpuTwo.innerHTML += createCardHtml(card.color, card.value, true);
     };
 
     for(let card of players[2]) {
-        cpuThree.innerHTML += createCardHtml(card.color,card.value, false);
+        cpuThree.innerHTML += createCardHtml(card.color,card.value, true);
     };
 
     for(let card of players[3]) {
-        cpuFour.innerHTML += createCardHtml(card.color,card.value, false);
+        cpuFour.innerHTML += createCardHtml(card.color,card.value, true);
     };
 
 };
 renderUserCards();
 
-// deck icin kartlarin html kodlarini hazirladik
 function createCardHtmlDeck(color,value, isBack = false) {
     return (`
     <div class="card stackOfDeck ${isBack ? 'back': ''}" data-color="${color}" data-value="${value}" style="background-color:${color};">
@@ -102,7 +89,6 @@ function createCardHtmlDeck(color,value, isBack = false) {
     </div>`)
 };
 
-// deckten cekilecek kartlar 
 function renderDeck() {
     for(let card of deck){
         deckObject.innerHTML += createCardHtmlDeck(card.color, card.value, true);
@@ -110,7 +96,6 @@ function renderDeck() {
 };
 renderDeck();
 
-// ortaya atilan kartlar
 function renderTable() {
     let card = table[table.length - 1];
     let angle = (Math.random() * - 15);
@@ -131,7 +116,6 @@ for(let cardElement of cardElements) {
     cardElement.addEventListener('click', playCard);
 }
 
-// kart oynayabiliyor mu kontrol
 function isCardPlayable(cardColor, cardValue) {
     if(table[table.length-1].color === cardColor || table[table.length-1].value === cardValue) {
         return true;
@@ -140,25 +124,10 @@ function isCardPlayable(cardColor, cardValue) {
 };
 
 function changeTurn() {
-    switch(turn){
-        case 1:
-            turn = 2;
-            break;
-        case 2:
-            turn = 3;
-            break;    
-        case 3:
-            turn = 4;
-            break;
-        case 4:
-            turn = 1;
-            break;
-    }
-
+    turn = (turn % 4) + 1;
     isDeckUsed = false;
 };
 
-// hangi kullanicin oynayabilecegini sorguluyoruz
 function canCurrentUserPlay() {
     let currentPlayerCards;
     switch(turn){
@@ -175,34 +144,28 @@ function canCurrentUserPlay() {
             currentPlayerCards = document.querySelectorAll('.player-4 .card');
             break;
     }
-    
-    // kart oynayabiliyor mu kontrol
     for(let card of currentPlayerCards) {
         if(isCardPlayable(card.dataset.color, card.dataset.value)) {
             return true;
         }
     }
-
     return false;
 };
 
 // oynama sirasinin kimde oldugunu gosterir
 function playerTurn(){
-    const players = [cardsContainer, cpuTwo, cpuThree, cpuFour];
+    const playersTurn = [cardsContainer, cpuTwo, cpuThree, cpuFour];
     for(let i=1; i<=4; i++){
-        players[i-1].classList.toggle('myTurn', i === turn);
+        playersTurn[i-1].classList.toggle('myTurn', i === turn);
     }
 }
 playerTurn();
 
-
 function playCard() {
-    //table'a tiklatmiyorum.
     if(this.parentNode.classList.contains('table')){
         return;
     }
 
-    // cpu'lardaki kartlara tiklaninca ortadaki kartla ayni degilse on tarafi gosterilmemesi icin
     if (isCardPlayable(this.dataset.color, this.dataset.value)) {
         if ((turn === 2 || turn === 3 || turn === 4) && this.parentNode.classList.contains('player-' + turn)) {
             this.classList.remove('back');
@@ -212,65 +175,38 @@ function playCard() {
 
     if(this.parentNode.classList.contains('deck')){
         drawCards.call(this);
+        deck.pop();
         return;
     }
 
     if(!isCardPlayable(this.dataset.color, this.dataset.value)) return;
 
-    // sira kimde ise sadece o oyunucunun oynamasini saglar
     const currentPlayer = playerClasses[turn - 1];
     if (!this.parentNode.classList.contains(currentPlayer)) return;
 
     tableCardObject.appendChild(this);
     table.push({ color: this.dataset.color, value: this.dataset.value });
+    this.classList.add(`cardPlayAnimation${turn}`);
 
-    switch (turn) {
-        case 1:
-            removeFromPlayerCards(this, players[0]);
-            break;
-        case 2:
-            removeFromPlayerCards(this, players[1]);
-            break;
-        case 3:
-            removeFromPlayerCards(this, players[2]);
-            break;
-        case 4:
-            removeFromPlayerCards(this, players[3]);
-            break;
-    }
 
+    removeFromPlayerCards(this, players[turn - 1]);
     checkGameEnd();
-
     changeTurn();
     playerTurn();
 
     if (turn !== 1) {
-        let currentPlayerCards;
-        switch (turn) {
-            case 2:
-                currentPlayerCards = document.querySelectorAll('.player-2 .card');
-                break;
-            case 3:
-                currentPlayerCards = document.querySelectorAll('.player-3 .card');
-                break;
-            case 4:
-                currentPlayerCards = document.querySelectorAll('.player-4 .card');
-                break;
-        }
-
-        // CPU oyuncusu için hamleyi oyna
+        const currentPlayerCards = document.querySelectorAll(`.player-${turn} .card`);
         playCardByCPU(currentPlayerCards);
     }
 };
 
 function drawCards() {
-    // isDeckUsed true olursa destemize deck'ten ikinci karti ekletmemek icin
     if(isDeckUsed){
         return;
     }
 
-    //this = card clasını temsil ediyor burada
-    // sira kimdeyse desckteki karti secilen divin alt cocugu olarak atiyor
+    this.classList.add(`cardDrawAnimation${turn}`);
+
     if (turn === 1){
         cardsContainer.appendChild(this);
         this.classList.remove('back', 'stackOfDeck');
@@ -290,29 +226,15 @@ function drawCards() {
         players[3].push({ color: this.dataset.color, value: this.dataset.value });
     }
     
-    isDeckUsed = true; // deck'ten ikinci karti eklemeyi engellemek icin
+    isDeckUsed = true; 
     
-
     if(!canCurrentUserPlay()){
         changeTurn();
         playerTurn();
     }
 
     if (turn !== 1) {
-        let currentPlayerCards;
-        switch (turn) {
-            case 2:
-                currentPlayerCards = document.querySelectorAll('.player-2 .card');
-                break;
-            case 3:
-                currentPlayerCards = document.querySelectorAll('.player-3 .card');
-                break;
-            case 4:
-                currentPlayerCards = document.querySelectorAll('.player-4 .card');
-                break;
-        }
-
-        // CPU oyuncusu için hamleyi oyna
+        const currentPlayerCards = document.querySelectorAll(`.player-${turn} .card`);
         playCardByCPU(currentPlayerCards);
     }
 }
@@ -341,6 +263,15 @@ function checkGameEnd() {
             alert('Kazanan oyuncu: ' + (i + 1));
             cardElements.forEach(card => card.removeEventListener('click', playCard));
             return;
+        }
+    }
+    if(deck.length === 0) {
+        const restartGame = confirm('Destede kart kalmadı. Oyun berabere bitti. Yeniden başlatmak ister misiniz?');
+
+        if (restartGame) {
+            window.location.reload();
+        } else {
+            cardElements.forEach(card => card.removeEventListener('click', playCard));
         }
     }
 }

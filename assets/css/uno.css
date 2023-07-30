@@ -39,13 +39,6 @@ body {
 
 
 .table {
-    /* display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateY(-58%); */
     width: 93px;
     height: 140px;
 }
@@ -115,7 +108,6 @@ body {
     position: absolute;
     top: 26%;
     right: 37%;
-    /* animation: my-deck-animation 1s infinite; */
     transition: all .2s ease-in-out;
 }
 
@@ -123,10 +115,6 @@ body {
     transform: scale(1.1);
     cursor: pointer;
 }
-
-/**/
-/**/
-/* ihtiyaca gore eklenecekler*/
 
 .back {
     background: url('../img/back.png') no-repeat;
@@ -230,7 +218,61 @@ body {
     cursor: pointer;
 }
 
-/**/
-/**/
-/**/
+.cardDrawAnimation1 {
+    animation: drawCardAnimation1 0.6s ease-in-out;
+}
+.cardDrawAnimation2 {
+    animation: drawCardAnimation2 0.6s ease-in-out;
+}
+.cardDrawAnimation3 {
+    animation: drawCardAnimation3 0.6s ease-in-out;
+}
+.cardDrawAnimation4 {
+    animation: drawCardAnimation4 0.6s ease-in-out;
+}
+@keyframes drawCardAnimation1 {
+    0% { transform: translateY(-300%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes drawCardAnimation2 {
+    0% { transform: translateX(-600%) translateY(-100%); opacity: 0; }
+    100% { transform: translateX(0) translateY(0); opacity: 1; }
+}
+@keyframes drawCardAnimation3 {
+    0% { transform: translateY(100%); opacity: 0; }
+    100% { transform:translateY(0); opacity: 1; }
+}
+@keyframes drawCardAnimation4 {
+    0% { transform: translateX(600%) translateY(-150%); opacity: 0; }
+    100% { transform: translateX(0) translateY(0); opacity: 1; }
+}
 
+
+.cardPlayAnimation1 {
+    animation: playCardAnimation1 0.5s ease-in-out;
+}
+.cardPlayAnimation2 {
+    animation: playCardAnimation2 0.5s ease-in-out;
+}
+.cardPlayAnimation3 {
+    animation: playCardAnimation3 0.5s ease-in-out;
+}
+.cardPlayAnimation4 {
+    animation: playCardAnimation4 0.5s ease-in-out;
+}
+@keyframes playCardAnimation1 {
+    0% { transform: translateY(200%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes playCardAnimation2 {
+    0% { transform: translateX(200%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+@keyframes playCardAnimation3 {
+    0% { transform: translateY(-200%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+@keyframes playCardAnimation4 {
+    0% { transform: translateX(-200%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
