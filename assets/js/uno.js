@@ -144,6 +144,7 @@ function isCardPlayable(cardColor, cardValue) {
 function changeTurn() {
     switch(turn){
         case 1:
+            // debugger;
             turn = 2;
             break;
         case 2:
@@ -158,7 +159,7 @@ function changeTurn() {
     }
 
     isDeckUsed = false;
-}
+};
 
 // hangi kullanicin oynayabilecegini sorguluyoruz
 function canCurrentUserPlay() {
@@ -234,7 +235,7 @@ function playCard() {
             this.children[2].classList.remove('centerNumberBgOff');
         }
     }
-    
+
     if(this.parentNode.classList.contains('deck')){
         // isDeckUsed true olursa destemize deck'ten ikinci karti ekletmemek icin
         if(isDeckUsed === true){
@@ -247,23 +248,44 @@ function playCard() {
             cardsContainer.appendChild(this);
             this.classList.remove('back', 'stackOfDeck');
             this.children[2].classList.remove('centerNumberBgOff'); 
-        }else if(turn === 2) {
-            cpuTwo.appendChild(this);
-            this.classList.remove('stackOfDeck');
-        }else if(turn === 3) {
-            cpuThree.appendChild(this);
-            this.classList.remove('stackOfDeck');
-        }else if(turn === 4) {
-            cpuFour.appendChild(this);
-            this.classList.remove('stackOfDeck');
-        }
+            }else if(turn === 2) {
+                cpuTwo.appendChild(this);
+                this.classList.remove('stackOfDeck');
+            }else if(turn === 3) {
+                cpuThree.appendChild(this);
+                this.classList.remove('stackOfDeck');
+            }else if(turn === 4) {
+                cpuFour.appendChild(this);
+                this.classList.remove('stackOfDeck');
+            }
         
         isDeckUsed = true; // deck'ten ikinci karti eklemeyi engellemek icin
+        
 
         if(!canCurrentUserPlay()){
             changeTurn();
             playerTurn();
         }
+
+        if (turn !== 1) {
+            let currentPlayerCards;
+            switch (turn) {
+                case 2:
+                    currentPlayerCards = document.querySelectorAll('.player-2 .card');
+                    break;
+                case 3:
+                    currentPlayerCards = document.querySelectorAll('.player-3 .card');
+                    break;
+                case 4:
+                    currentPlayerCards = document.querySelectorAll('.player-4 .card');
+                    break;
+            }
+    
+            // CPU oyuncusu için hamleyi oyna
+            playCardByCPU(currentPlayerCards);
+        }
+
+
         return;
     }
 
@@ -287,37 +309,29 @@ function playCard() {
     }
     changeTurn();
     playerTurn();
+
+    if (turn !== 1) {
+        let currentPlayerCards;
+        switch (turn) {
+            case 2:
+                currentPlayerCards = document.querySelectorAll('.player-2 .card');
+                break;
+            case 3:
+                currentPlayerCards = document.querySelectorAll('.player-3 .card');
+                break;
+            case 4:
+                currentPlayerCards = document.querySelectorAll('.player-4 .card');
+                break;
+        }
+        // CPU oyuncusu için hamleyi oyna
+        playCardByCPU(currentPlayerCards);
+    }
 };
 
-function playCardByCPU() {
-    let currentPlayerCards;
-    switch (turn) {
-        case 2:
-            currentPlayerCards = document.querySelectorAll('.player-2 .card');
-            break;
-        case 3:
-            currentPlayerCards = document.querySelectorAll('.player-3 .card');
-            break;
-        case 4:
-            currentPlayerCards = document.querySelectorAll('.player-4 .card');
-            break;
-    }
-
-    // Uygun kartı otomatik olarak oynat
-    for (let card of currentPlayerCards) {
-        if (isCardPlayable(card.dataset.color, card.dataset.value)) {
-            setTimeout(() => {
-                card.click();
-            }, 1000); // 1 saniye gecikme ile kartı oynat (dilediğiniz zamanı ayarlayabilirsiniz)
-            return;
-        }
-    }
-
-    // Uygun kart yoksa kart çek
-    setTimeout(() => {
-        let deckCards = document.querySelectorAll('.deck .card');
-        if (deckCards.length > 0) {
-            deckCards[deckCards.length - 1].click();
-        }
-    }, 1000); // 1 saniye gecikme ile kartı çek (dilediğiniz zamanı ayarlayabilirsiniz)
+function playCardByCPU(currentPlayerCards) {
+    const cardsArray = Array.from(currentPlayerCards);
+    const matchingCards = cardsArray.filter(card => isCardPlayable(card.dataset.color, card.dataset.value));
+    const selectedCard = matchingCards.length ? matchingCards[Math.floor(Math.random() * matchingCards.length)] : document.querySelector('.deck .card:last-child');
+    setTimeout(() => selectedCard.click(), 1000);
 }
+
