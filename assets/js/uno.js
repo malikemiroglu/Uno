@@ -181,6 +181,12 @@ function playCard() {
 
     if(!isCardPlayable(this.dataset.color, this.dataset.value)) return;
 
+    for(let i=0 ; i<4 ; i++){
+        if(players[turn - 1].length === 1){
+            alert(`Player-${i+1} UNO!`);
+        }
+    }
+
     const currentPlayer = playerClasses[turn - 1];
     if (!this.parentNode.classList.contains(currentPlayer)) return;
 
