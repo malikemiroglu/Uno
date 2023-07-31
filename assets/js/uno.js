@@ -152,7 +152,6 @@ function canCurrentUserPlay() {
     return false;
 };
 
-// oynama sirasinin kimde oldugunu gosterir
 function playerTurn(){
     const playersTurn = [cardsContainer, cpuTwo, cpuThree, cpuFour];
     for(let i=1; i<=4; i++){

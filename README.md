@@ -2,16 +2,17 @@
 
 ![UNO](./assets/img/image.png)
 
-Bu projede JavaScript kullanarak basit bir UNO kart oyunu geliştirdim. Oyun, HTML, CSS ve JavaScript teknolojilerini kullanarak tarayıcınızda oynanabilir. Oyunun amacı, elinizdeki kartları bitirmek ve diğer oyuncuları alt etmektir.
+Bu projede JavaScript kullanarak basit bir UNO kart oyunu geliştirdim. Oyun, HTML5, CSS ve JavaScript teknolojilerini kullanarak tarayıcınızda oynanabilir. Oyunun amacı, elinizdeki kartları bitirmek ve diğer oyuncuları alt etmektir.
 
 ## Nasıl Oynanır?
 
 1. Oyun başladığında her oyuncu 7 kart alır.
 2. Masada bir kart açılır ve bu kartın rengi veya değeri üzerine oynanabilecek kartlar belirlenir.
 3. Sıra sizde olduğunda, rengi veya numarası aynı olan kartı masada açık olan kartın üstüne koyabilirsiniz.
-4. Eğer elinizde oynayabileceğiniz bir kart yoksa, kart çekmek için ortada bulunan desteden sadece 1 adet kart alabilirsiniz.
+4. Elinizde oynayabileceğiniz bir kart yoksa, kart çekmek için ortada bulunan desteden sadece 1 adet kart alabilirsiniz.
 5. Eğer çektiğiniz kart ortada bulunan kart ile eşleşmiyorsa sıra otomatik olarak diğer oyuncuya geçer.
 6. Oyunculardan biri elinde kart kalmadan oyunu bitirirse, o oyuncu kazanır.
+7. Her hangi bir oyuncunun elindeki kartlar bitmeden deste biterse oyun tekrar başlar.
 
 
 ## Kartlar
